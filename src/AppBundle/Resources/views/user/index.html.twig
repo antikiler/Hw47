@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Список пользователей</h1>
+<a href="{{ path('userNew') }}"><button>Добавить пользователя</button></a><br><br>
+<table width="600px" border="1">
+    <thead>
+    <tr>
+        <th>Имя:</th>
+        <th>Фамилия:</th>
+        <th>Email:</th>
+        <th>Действие</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+        <tr onclick="window.location='{{ path('userShow',{'id':user.id})}}'">
+            <td>{{ user.name }}</td>
+            <td>{{ user.lastName }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+                <a href="{{ path('userEdit', {'id' : user.id}) }}"><button>Редактировать</button></a>
+                {% set form = articleDeleteForm.createView %}
+                {{ form_start(form, {'action' : path('userDelete', {'id' : user.id})}) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="4">Нет пользователей</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

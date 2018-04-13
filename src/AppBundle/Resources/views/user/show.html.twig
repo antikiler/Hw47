@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Пользователь: {{ user.name }} {{ user.lastName }} {{ user.email }}</h1>
+    <table width="600px" border="1">
+        <thead>
+        <tr>
+            <th>Имя:</th>
+            <th>Фамилия:</th>
+            <th>Email:</th>
+            <th>Пол:</th>
+            <th>Город:</th>
+            <th>Активный:</th>
+            <th>Действие:</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr onclick="window.location='{{ path('userShow',{'id':user.id})}}'">
+                <td>{{ user.name }}</td>
+                <td>{{ user.lastName }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.printTableSex }}</td>
+                <td>{{ user.printTableCity }}</td>
+                <td>{{ user.printTableActive }}</td>
+                <td>
+                    <a href="{{ path('userEdit', {'id' : user.id}) }}"><button>Редактировать</button></a>
+                    {% set form = articleDeleteForm.createView %}
+                    {{ form_start(form, {'action' : path('userDelete', {'id' : user.id})}) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br><br> <a href="{{ path('userList') }}"><button>К списку пользователей</button></a><br><br>
+{% endblock %}
