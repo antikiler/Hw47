@@ -5,6 +5,7 @@
     <table width="600px" border="1">
         <thead>
         <tr>
+            <th>Аватар:</th>
             <th>Имя:</th>
             <th>Фамилия:</th>
             <th>Email:</th>
@@ -16,6 +17,7 @@
         </thead>
         <tbody>
             <tr onclick="window.location='{{ path('userShow',{'id':user.id})}}'">
+                <td><img src="{{ asset(user_image_directory ~ user.avatar) }}" style="width:100px;height: 100px;"></td>
                 <td>{{ user.name }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>{{ user.email }}</td>

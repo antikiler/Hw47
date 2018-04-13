@@ -3,21 +3,25 @@
 {% block body %}
 <h1>Список пользователей</h1>
 <a href="{{ path('userNew') }}"><button>Добавить пользователя</button></a><br><br>
-<table width="600px" border="1">
+<table width="800px" border="1">
     <thead>
     <tr>
+        <th>Аватар:</th>
         <th>Имя:</th>
         <th>Фамилия:</th>
         <th>Email:</th>
+        <th>Url site:</th>
         <th>Действие</th>
     </tr>
     </thead>
     <tbody>
     {% for user in users %}
         <tr onclick="window.location='{{ path('userShow',{'id':user.id})}}'">
+            <td><img src="{{ asset(user_image_directory ~ user.avatar) }}" style="width:100px;height: 100px;"></td>
             <td>{{ user.name }}</td>
             <td>{{ user.lastName }}</td>
             <td>{{ user.email }}</td>
+            <td><a href="{{ user.urlWebSite }}">URL личной странички</a></td>
             <td>
                 <a href="{{ path('userEdit', {'id' : user.id}) }}"><button>Редактировать</button></a>
                 {% set form = articleDeleteForm.createView %}

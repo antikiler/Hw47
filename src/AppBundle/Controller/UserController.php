@@ -47,10 +47,7 @@ class UserController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-
+            $this->userSave($user);
             return $this->redirectToRoute("userList");
         }
         return $this->render('@App/user/new.html.twig',[
@@ -78,11 +75,9 @@ class UserController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-
+            $this->userSave($user);
             return $this->redirectToRoute("userList");
+
         }
         return $this->render('@App/user/new.html.twig',[
             'form' => $form->createView()
@@ -104,7 +99,6 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);
         $em->flush();
-
         return $this->redirectToRoute("userList");
     }
     /**
@@ -126,6 +120,21 @@ class UserController extends Controller
             'user'=>$user,
             'articleDeleteForm' => $delete_form
         ]);
+    }
+
+    private function userSave(User $user)
+    {
+        /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
+        $file = $user->getAvatar();
+        $fileName = md5(uniqid()).".".$file->guessExtension();
+        $file->move(
+            $this->getParameter("user_image_directory"),
+            $fileName
+        );
+        $user->setAvatar($fileName);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
     }
 
 }
